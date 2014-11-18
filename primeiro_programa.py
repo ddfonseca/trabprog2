@@ -7,7 +7,7 @@ Renan Ermida Fontes. DRE:
 import os.path
 
 # open faculdade.txt
-faculdade = open('faculdade.txt', 'r')
+faculdades = open('faculdades.txt', 'r')
 
 # open alunos.txt
 alunos = open ('alunos.txt', 'r')
@@ -51,6 +51,8 @@ def bubble_sort(alunos_curso):
 for line in alunos:
     line_lst = line.strip().split(';')
     alunos_total.append(line_lst)
+    print line_lst[-2] == "Direito"
+
     if line_lst[-2] == "Engenharia":
         alunos_engenharia_1.append(line_lst)
 
@@ -62,8 +64,8 @@ for line in alunos:
 
     elif line_lst[-1] == "Medicina":
         alunos_medicina_2.append(line_lst)
-        
-    elif line_lst[-2] == "Direito" 
+
+    elif line_lst[-2] == "Direito":
         alunos_direito_1.append(line_lst)
 
     elif line_lst[-1] == "Direito":
@@ -85,30 +87,75 @@ alunos_eng_desc_2 = bubble_sort(alunos_engenharia_2)
 alunos_eng_desc.extend(alunos_eng_desc_1)
 alunos_eng_desc.extend(alunos_eng_desc_2)
 
-alunos_med_desc = bubble_sort(alunos_medicina)
-alunos_dir_desc = bubble_sort(alunos_direito)
-alunos_fis_desc = bubble_sort(alunos_fisica)
+alunos_med_desc_1 = bubble_sort(alunos_medicina_1)
+alunos_med_desc_2 = bubble_sort(alunos_medicina_2)
+alunos_med_desc.extend(alunos_eng_desc_1)
+alunos_med_desc.extend(alunos_eng_desc_2)
+
+print alunos_direito_1
+alunos_dir_desc_1 = bubble_sort(alunos_direito_1)
+alunos_dir_desc_2 = bubble_sort(alunos_direito_2)
+alunos_dir_desc.extend(alunos_dir_desc_1)
+alunos_dir_desc.extend(alunos_dir_desc_2)
+
+alunos_fis_desc_1 = bubble_sort(alunos_fisica_1)
+alunos_fis_desc_2 = bubble_sort(alunos_fisica_2)
+alunos_fis_desc.extend(alunos_fis_desc_1)
+alunos_fis_desc.extend(alunos_fis_desc_2)
+
 alunos_total_desc = bubble_sort(alunos_total)
 
-print "####################################### ALUNOS DESCRESCENTE ######################################"
-for aluno in alunos_eng_desc:
-    print aluno
+# print "####################################### ALUNOS DESCRESCENTE ######################################"
+# for aluno in alunos_eng_desc:
+#     print aluno
 
 # separar quantidade de vagas dos respectivos cursos
-# for line in faculdade:
-#     line_lst = line.split(';')
-#     print line_lst[0]
-#     if line_lst[0] == 'Engenharia':
-#         vagas_engenharia = line_lst[1]
+for line in faculdades:
+    line_lst = line.strip().split(';')
+    if line_lst[0] == 'Engenharia':
+        vagas_engenharia = int(line_lst[1])
+
+    elif line_lst[0] == 'Medicina':
+        vagas_medicina = int(line_lst[1])
+
+    elif line_lst[0] == 'Direito':
+        vagas_direito = int(line_lst[1])
+
+    else:
+        vagas_fisica = int(line_lst[1])
+
+# lista dos aprovados nos seus respectivos cursos
+aprovados_eng = []
+aprovados_med = []
+aprovados_dir = []
+aprovados_fis = []
+
+aprovados_eng = alunos_eng_desc_1[0:vagas_engenharia]
+aprovados_med = alunos_med_desc_1[0:vagas_medicina]
+aprovados_dir = alunos_dir_desc_1[0:vagas_direito]
+aprovados_fis = alunos_fis_desc_1[0:vagas_fisica]
+
+
+# print alunos_dir_desc_1
+# print alunos_dir_desc_2
+
+# print "Alunos ENG"
+# for alunos in aprovados_eng:
+#     print alunos
 #
-#     elif line_lst[0] == 'Medicina':
-#         vagas_medicina = line_lst[1]
+# print "Alunos MED"
+# for alunos in aprovados_med:
+#     print alunos
 #
-#     elif line_lst[0] == 'Direito':
-#         vagas_direito = line_lst[1]
+# print "Alunos DIR"
+# for alunos in aprovados_dir:
+#     print alunos
 #
-#     else:
-#         vagas_fisica = line_lst[1]
+# print "Alunos FIS:"
+# for alunos in aprovados_fis:
+#     print alunos
+# if len(aprovados_eng) < 5:
+
 
 num = 1
 while os.path.isfile("selecao%s.txt" % num):
@@ -119,6 +166,6 @@ else:
     # selecao.write('Teste')
     
 # fechando os arquivos
-faculdade.close()
-alunos.close()
+faculdades.close()
+# alunos.close()
 # selecao.close()
