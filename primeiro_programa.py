@@ -111,6 +111,15 @@ else:
     selecao = open('selecao%s.txt' % num, 'w')
 
 
+selecao.write('Curso; # de vagas; # de selecionados; matriculas\n')
+for key in cursos.keys():
+    linha = "%s\t%i\t%i" % (faculdade[key][0], int(faculdade[key][1]), len(aprovados_cursos[key]))
+    for aluno in aprovados_cursos[key]:
+        matricula = aluno[1]
+        linha += "\t" + str(matricula)
+    selecao.write(linha + '\n')
+
+
 
 # # fechando os arquivos
 # faculdades.close()
