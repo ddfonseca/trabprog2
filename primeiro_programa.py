@@ -2,7 +2,7 @@
 Trabalho de MCG126 - Programacao Computacional II
 Renan Ermida Fontes. DRE: 
 """
-# NOME e DRE
+# Renan Ermida Fontes e DRE
 
 import os.path
 
@@ -12,160 +12,107 @@ faculdades = open('faculdades.txt', 'r')
 # open alunos.txt
 alunos = open ('alunos.txt', 'r')
 
-# cursos = ['Engenharia', 'Medicina', 'Direito', 'Fisica']
-# inicializar alunos dos respectivos curso
-alunos_eng_desc = []
-alunos_engenharia_1 = []
-alunos_engenharia_2 = []
 
-alunos_med_desc = []
-alunos_medicina_1 = []
-alunos_medicina_2 = []
+cursos = {}
+faculdade = []
+# alunos_cursos_1[0] = alunos da primeira opcao de engenharia
+# alunos_cursos_1[1] = alunos da primeira opcao de medicina...
+alunos_cursos_1 = []
+alunos_cursos_2 = []
+aprovados_cursos = []
+nao_aprovados_cursos = []
+reclassificados_cursos = []
 
-alunos_dir_desc = []
-alunos_direito_1 = []
-alunos_direito_2 = []
+all_lines_fac = faculdades.readlines()
+for line in all_lines_fac:
+    """
+    Separa o nome da faculdade e a vaga respectivamente na lista faculdade.
+    """
+    facul_vaga = line.strip().split(';')
+    faculdade.append(facul_vaga)
 
-alunos_fis_desc = []
-alunos_fisica_1 = []
-alunos_fisica_2 = []
+idx = 0
+for curso in faculdade:
+    """
+    Cria um dicionario com um indice e seu respectivo curso.
+    """
+    cursos[idx] = curso[0]
+    idx += 1
 
-alunos_total = []
+for num_cursos in range(idx):
+    alunos_cursos_1.append([])
+    alunos_cursos_2.append([])
+    aprovados_cursos.append([])
+    nao_aprovados_cursos.append([])
+    reclassificados_cursos.append([])
+
+all_lines_alu = alunos.readlines() 
 
 # Bubble Sort, algoritimo para ordernar uma lista na ordem descrecente
 def bubble_sort(alunos_curso):
-    cp_alunos_curso = list(alunos_curso)
-    for i in range(len(cp_alunos_curso)-1):
-        for j in range(len(cp_alunos_curso)-1-i):
-            if cp_alunos_curso[j][2] < cp_alunos_curso[j+1][2]:
-                cp_alunos_curso[j], cp_alunos_curso[j+1] = cp_alunos_curso[j+1], cp_alunos_curso[j]
+    """
+    Bubble Sort: Algoritimo para ordernar uma lista na ordem descrescente e se a nota for igual, o mais velho prevalece.
+    """
+    for i in range(len(alunos_curso)-1):
+        for j in range(len(alunos_curso)-1-i):
+            if alunos_curso[j][2] < alunos_curso[j+1][2]:
+                alunos_curso[j], alunos_curso[j+1] = alunos_curso[j+1], alunos_curso[j]
            
            # se tiverem a mesma nota, e o anterior for mais novo, troca pois a preferencia e dos mais velhos
-            elif cp_alunos_curso[j][2] == cp_alunos_curso[j+1][2]:
-                if int(cp_alunos_curso[j][3][-4:]) > int(cp_alunos_curso[j+1][3][-4:]):
-                    cp_alunos_curso[j], cp_alunos_curso[j+1] = cp_alunos_curso[j+1], cp_alunos_curso[j]
+            elif alunos_curso[j][2] == alunos_curso[j+1][2]:
+                if int(alunos_curso[j][3][-4:]) > int(alunos_curso[j+1][3][-4:]):
+                    alunos_curso[j], alunos_curso[j+1] = alunos_curso[j+1], alunos_curso[j]
 
-    return cp_alunos_curso
-
-# separar alunos dos respectivos cursos
-for line in alunos:
+# separar cada aluno da primeira opcao em cada curso em alunos_cursos_1
+for line in all_lines_alu:
     line_lst = line.strip().split(';')
-    alunos_total.append(line_lst)
-    print line_lst[-2] == "Direito"
+    for key, curso in cursos.items():
+        if line_lst[-2] == curso:
+            alunos_cursos_1[key].append(line_lst)
+        
+        elif line_lst[-1] == curso:
+            alunos_cursos_2[key].append(line_lst)
 
-    if line_lst[-2] == "Engenharia":
-        alunos_engenharia_1.append(line_lst)
-
-    elif line_lst[-1] == "Engenharia":
-        alunos_engenharia_2.append(line_lst)
-
-    elif line_lst[-2] == "Medicina" :
-        alunos_medicina_1.append(line_lst)
-
-    elif line_lst[-1] == "Medicina":
-        alunos_medicina_2.append(line_lst)
-
-    elif line_lst[-2] == "Direito":
-        alunos_direito_1.append(line_lst)
-
-    elif line_lst[-1] == "Direito":
-        alunos_direito_2.append(line_lst) 
-
-    elif line_lst[-2] == "Fisica": 
-        alunos_fisica_1.append(line_lst)
-
-    elif line_lst[-1] == "Fisica":
-        alunos_fisica_2.append(line_lst)
-
-    # else:
-    #     alunos_fisica.append(line_lst)
-
-
-# Ordernar alunos dos repsectivos cursos na ordem descrecente
-alunos_eng_desc_1 = bubble_sort(alunos_engenharia_1)
-alunos_eng_desc_2 = bubble_sort(alunos_engenharia_2)
-alunos_eng_desc.extend(alunos_eng_desc_1)
-alunos_eng_desc.extend(alunos_eng_desc_2)
-
-alunos_med_desc_1 = bubble_sort(alunos_medicina_1)
-alunos_med_desc_2 = bubble_sort(alunos_medicina_2)
-alunos_med_desc.extend(alunos_eng_desc_1)
-alunos_med_desc.extend(alunos_eng_desc_2)
-
-print alunos_direito_1
-alunos_dir_desc_1 = bubble_sort(alunos_direito_1)
-alunos_dir_desc_2 = bubble_sort(alunos_direito_2)
-alunos_dir_desc.extend(alunos_dir_desc_1)
-alunos_dir_desc.extend(alunos_dir_desc_2)
-
-alunos_fis_desc_1 = bubble_sort(alunos_fisica_1)
-alunos_fis_desc_2 = bubble_sort(alunos_fisica_2)
-alunos_fis_desc.extend(alunos_fis_desc_1)
-alunos_fis_desc.extend(alunos_fis_desc_2)
-
-alunos_total_desc = bubble_sort(alunos_total)
-
-# print "####################################### ALUNOS DESCRESCENTE ######################################"
-# for aluno in alunos_eng_desc:
-#     print aluno
-
-# separar quantidade de vagas dos respectivos cursos
-for line in faculdades:
-    line_lst = line.strip().split(';')
-    if line_lst[0] == 'Engenharia':
-        vagas_engenharia = int(line_lst[1])
-
-    elif line_lst[0] == 'Medicina':
-        vagas_medicina = int(line_lst[1])
-
-    elif line_lst[0] == 'Direito':
-        vagas_direito = int(line_lst[1])
-
-    else:
-        vagas_fisica = int(line_lst[1])
+for key in cursos.keys():
+    bubble_sort(alunos_cursos_1[key])
+    bubble_sort(alunos_cursos_2[key])
 
 # lista dos aprovados nos seus respectivos cursos
-aprovados_eng = []
-aprovados_med = []
-aprovados_dir = []
-aprovados_fis = []
 
-aprovados_eng = alunos_eng_desc_1[0:vagas_engenharia]
-aprovados_med = alunos_med_desc_1[0:vagas_medicina]
-aprovados_dir = alunos_dir_desc_1[0:vagas_direito]
-aprovados_fis = alunos_fis_desc_1[0:vagas_fisica]
+for key, curso in cursos.items():
+    vagas = int(faculdade[key][1])
+    selecionados_1 = alunos_cursos_1[key][0:vagas]
+    nao_aprovados = alunos_cursos_1[key][vagas:]
+    aprovados_cursos[key].extend(selecionados_1)
+    nao_aprovados_cursos[key].extend(nao_aprovados)
+    bubble_sort(nao_aprovados_cursos[key])
 
+for key, curso in cursos.items():
+    vagas = int(faculdade[key][1])
+    # if len(aprovados_cursos[key]) < vagas:
+    for key_2 in cursos.keys():
+        for aluno in nao_aprovados_cursos[key_2]:
+            if aluno[-1] == curso:
+                reclassificados_cursos[key].append(aluno)
 
-# print alunos_dir_desc_1
-# print alunos_dir_desc_2
+    bubble_sort(reclassificados_cursos[key])
 
-# print "Alunos ENG"
-# for alunos in aprovados_eng:
-#     print alunos
-#
-# print "Alunos MED"
-# for alunos in aprovados_med:
-#     print alunos
-#
-# print "Alunos DIR"
-# for alunos in aprovados_dir:
-#     print alunos
-#
-# print "Alunos FIS:"
-# for alunos in aprovados_fis:
-#     print alunos
-# if len(aprovados_eng) < 5:
-
+for key in cursos.keys():
+    vagas = int(faculdade[key][1])
+    while len(aprovados_cursos[key]) < vagas:
+        # reclassificados_cursos viram nao_aprovados
+        aluno_reclassificado = reclassificados_cursos[key].pop(0)
+        aprovados_cursos[key].append(aluno_reclassificado)
 
 num = 1
 while os.path.isfile("selecao%s.txt" % num):
     num += 1
-
 else:
     selecao = open('selecao%s.txt' % num, 'w')
-    # selecao.write('Teste')
-    
-# fechando os arquivos
-faculdades.close()
-# alunos.close()
-# selecao.close()
+
+
+
+# # fechando os arquivos
+# faculdades.close()
+# # alunos.close()
+# # selecao.close()
