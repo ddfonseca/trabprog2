@@ -40,6 +40,9 @@ for curso in faculdade:
     idx += 1
 
 for num_cursos in range(idx):
+    """
+    Iniciando as variaveis de acordo com o numero de cursos.
+    """
     alunos_cursos_1.append([])
     alunos_cursos_2.append([])
     aprovados_cursos.append([])
@@ -65,21 +68,32 @@ def bubble_sort(alunos_curso):
 
 # separar cada aluno da primeira opcao em cada curso em alunos_cursos_1
 for line in all_lines_alu:
+    """
+    Separa cada aluno de cada curso de acordo com sua primeira opcao e segunda opcao
+    """
     line_lst = line.strip().split(';')
     for key, curso in cursos.items():
+        # se escolheu o curso da primeira opcao, adicione ao alunos_cursos_1
         if line_lst[-2] == curso:
             alunos_cursos_1[key].append(line_lst)
         
+        #se escolheu o curso da segunda opcao, adicione ao alunos_cursos_2
         elif line_lst[-1] == curso:
             alunos_cursos_2[key].append(line_lst)
 
 for key in cursos.keys():
+    """
+    Ordernar de ordem descrescente de notas as listas.
+    """
     bubble_sort(alunos_cursos_1[key])
     bubble_sort(alunos_cursos_2[key])
 
 # lista dos aprovados nos seus respectivos cursos
 
 for key, curso in cursos.items():
+    """
+    Separa os aprovados de cada curso e os nao aprovados, assim como ordena na ordem descrescente os nao aprovados.
+    """
     vagas = int(faculdade[key][1])
     selecionados_1 = alunos_cursos_1[key][0:vagas]
     nao_aprovados = alunos_cursos_1[key][vagas:]
@@ -88,6 +102,9 @@ for key, curso in cursos.items():
     bubble_sort(nao_aprovados_cursos[key])
 
 for key, curso in cursos.items():
+    """
+    Todos que nao foram aprovados nos seus respectivos cursos, serao alocados em uma nova lista de reclassificados de acordo com sua segunda opcao de curso assim como ordernar essa nova lista na ordem descrescente
+    """
     vagas = int(faculdade[key][1])
     # if len(aprovados_cursos[key]) < vagas:
     for key_2 in cursos.keys():
@@ -98,12 +115,16 @@ for key, curso in cursos.items():
     bubble_sort(reclassificados_cursos[key])
 
 for key in cursos.keys():
+    """
+    Se houver vaga sobrando em algum curso, alocar os que estao na reclassificacao para tais cursos de acordo com sua nota. Quem escolheu a primeira opcao tem preferencia mesmo com nota menor.
+    """
     vagas = int(faculdade[key][1])
     while len(aprovados_cursos[key]) < vagas:
         # reclassificados_cursos viram nao_aprovados
         aluno_reclassificado = reclassificados_cursos[key].pop(0)
         aprovados_cursos[key].append(aluno_reclassificado)
 
+# Enquanto for verdade que existe o arquivo selecao%NUM.txt entao adicione 1 ao num e entao crie tal arquivo
 num = 1
 while os.path.isfile("selecao%s.txt" % num):
     num += 1
@@ -121,7 +142,7 @@ for key in cursos.keys():
 
 
 
-# # fechando os arquivos
-# faculdades.close()
-# # alunos.close()
-# # selecao.close()
+# fechando os arquivos
+faculdades.close()
+alunos.close()
+selecao.close()
